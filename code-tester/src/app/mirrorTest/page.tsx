@@ -9,5 +9,17 @@ export default function Home() {
 		console.log('val:', val);
 		setValue(val);
 	}, []);
-	return <CodeMirror value={value} height="200px" extensions={[python()]} onChange={onChange} />;
+	return (
+		<div>
+			<CodeMirror value={value} height="200px" extensions={[python()]} onChange={onChange} />
+			<input type="button" value="Run" onClick={async () => {
+				fetch("/api/exec",
+					{
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({ code: value })
+					}
+				)
+			}} />
+		</div>);
 }
